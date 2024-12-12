@@ -68,34 +68,41 @@
                 document.getElementById('availableHacks').innerHTML = `
                     <p>FIRMWARE STATUS: INSTALLED</p>
                     <p>Available Hacks:</p>
-                    <button onclick="toggleHack('aimbot')">Aimbot [${hacks.aimbot.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.aimbot.active ? 'Active' : 'Inactive'}</button>
-                    <button onclick="toggleHack('wallhack')">Wallhack [${hacks.wallhack.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.wallhack.active ? 'Active' : 'Inactive'}</button>
-                    <button onclick="toggleHack('triggerbot')">Triggerbot [${hacks.triggerbot.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.triggerbot.active ? 'Active' : 'Inactive'}</button>
-                    <button onclick="toggleHack('esp')">ESP [${hacks.esp.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.esp.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="downloadHack('aimbot')">Aimbot [${hacks.aimbot.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.aimbot.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="downloadHack('wallhack')">Wallhack [${hacks.wallhack.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.wallhack.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="downloadHack('triggerbot')">Triggerbot [${hacks.triggerbot.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.triggerbot.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="downloadHack('esp')">ESP [${hacks.esp.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.esp.active ? 'Active' : 'Inactive'}</button>
                     <button onclick="installAllHacks()">Install All Hacks</button>
                 `;
             }
         }
 
-        function toggleHack(hack) {
-            if (firmwareDownloaded) {
-                if (hacks[hack].installed) {
-                    hacks[hack].active = !hacks[hack].active;
-                } else {
-                    hacks[hack].installed = true;
-                    hacks[hack].active = true;
-                }
-                updateMenu();
+        function downloadHack(hack) {
+            if (firmwareDownloaded && !hacks[hack].installed) {
+                document.getElementById('firmwareStatus').innerText = `Downloading ${hack}...`;
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += premium ? 2 : 1;
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        hacks[hack].installed = true;
+                        hacks[hack].active = true;
+                        document.getElementById('firmwareStatus').innerText = `${hack.charAt(0).toUpperCase() + hack.slice(1)} installed successfully!`;
+                        updateMenu();
+                    } else {
+                        document.getElementById('firmwareStatus').innerText = `Downloading ${hack}... ${progress}%`;
+                    }
+                }, 100);
             }
         }
 
         function installAllHacks() {
             if (firmwareDownloaded) {
                 for (let hack in hacks) {
-                    hacks[hack].installed = true;
-                    hacks[hack].active = true;
+                    if (!hacks[hack].installed) {
+                        downloadHack(hack);
+                    }
                 }
-                updateMenu();
             }
         }
 
