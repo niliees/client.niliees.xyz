@@ -4,43 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cheat Firmware</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 20px;
-        }
-        .premium {
-            color: green;
-        }
-        .invalid {
-            color: red;
-        }
-        .progress-bar {
-            width: 100%;
-            background-color: #ddd;
-        }
-        .progress-bar-fill {
-            height: 20px;
-            background-color: green;
-            width: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Cheat Firmware</h1>
-    <p>Enter Premium Code for 50% faster downloads or press ENTER to continue with normal speed</p>
-    <input type="text" id="premiumCode" placeholder="Premium Code">
-    <button onclick="checkPremiumCode()">Submit</button>
-    <p id="premiumStatus"></p>
+    <div class="cmd">
+        <h1>Welcome to Cheat Firmware</h1>
+        <p>Enter Premium Code for 50% faster downloads or press ENTER to continue with normal speed</p>
+        <input type="text" id="premiumCode" placeholder="Premium Code">
+        <button onclick="checkPremiumCode()">Submit</button>
+        <p id="premiumStatus"></p>
 
-    <div id="menu">
-        <h2>Cheat Command Prompt</h2>
-        <div id="firmwareStatus"></div>
-        <div id="availableHacks"></div>
-        <button onclick="downloadFirmware()">Download Firmware</button>
-        <button onclick="exit()">Exit</button>
+        <div id="menu">
+            <h2>Cheat Command Prompt</h2>
+            <div id="firmwareStatus"></div>
+            <div id="availableHacks"></div>
+            <button onclick="downloadFirmware()">Download Firmware</button>
+            <button onclick="exit()">Exit</button>
+        </div>
     </div>
 
     <script>
