@@ -1,6 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheat Firmware</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        .premium {
+            color: green;
+        }
+        .invalid {
+            color: red;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #ddd;
+        }
+        .progress-bar-fill {
+            height: 20px;
+            background-color: green;
+            width: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Cheat Firmware</h1>
+    <p>Enter Premium Code for 50% faster downloads or press ENTER to continue with normal speed</p>
+    <input type="text" id="premiumCode" placeholder="Premium Code">
+    <button onclick="checkPremiumCode()">Submit</button>
+    <p id="premiumStatus"></p>
 
-<html>
-  <body>
-    <h1>Cheat Firmware</h1>
-  </body>
+    <div id="menu">
+        <h2>Cheat Command Prompt</h2>
+        <div id="firmwareStatus"></div>
+        <div id="availableHacks"></div>
+        <button onclick="downloadFirmware()">Download Firmware</button>
+        <button onclick="exit()">Exit</button>
+    </div>
+
+    <script>
+        let premium = false;
+        let firmwareDownloaded = false;
+        let hacks = {
+            aimbot: { installed: false, active: false },
+            wallhack: { installed: false, active: false },
+            triggerbot: { installed: false, active: false },
+            esp: { installed: false, active: false }
+        };
+
+        function checkPremiumCode() {
+            const code = document.getElementById('premiumCode').value;
+            if (code === 'uno/8888:8080') {
+                premium = true;
+                document.getElementById('premiumStatus').innerText = 'Premium Code accepted! Downloads will be 50% faster.';
+                document.getElementById('premiumStatus').className = 'premium';
+            } else if (code !== '') {
+                document.getElementById('premiumStatus').innerText = 'Invalid Premium Code';
+                document.getElementById('premiumStatus').className = 'invalid';
+            }
+        }
+
+        function downloadFirmware() {
+            if (!firmwareDownloaded) {
+                document.getElementById('firmwareStatus').innerText = 'Downloading firmware...';
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += premium ? 2 : 1;
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        firmwareDownloaded = true;
+                        document.getElementById('firmwareStatus').innerText = 'Firmware installed successfully!';
+                        updateMenu();
+                    } else {
+                        document.getElementById('firmwareStatus').innerText = `Downloading firmware... ${progress}%`;
+                    }
+                }, 100);
+            }
+        }
+
+        function updateMenu() {
+            if (firmwareDownloaded) {
+                document.getElementById('availableHacks').innerHTML = `
+                    <p>FIRMWARE STATUS: INSTALLED</p>
+                    <p>Available Hacks:</p>
+                    <button onclick="toggleHack('aimbot')">Aimbot [${hacks.aimbot.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.aimbot.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="toggleHack('wallhack')">Wallhack [${hacks.wallhack.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.wallhack.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="toggleHack('triggerbot')">Triggerbot [${hacks.triggerbot.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.triggerbot.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="toggleHack('esp')">ESP [${hacks.esp.installed ? 'Installed' : 'Not Installed'}] Status: ${hacks.esp.active ? 'Active' : 'Inactive'}</button>
+                    <button onclick="installAllHacks()">Install All Hacks</button>
+                `;
+            }
+        }
+
+        function toggleHack(hack) {
+            if (firmwareDownloaded) {
+                if (hacks[hack].installed) {
+                    hacks[hack].active = !hacks[hack].active;
+                } else {
+                    hacks[hack].installed = true;
+                    hacks[hack].active = true;
+                }
+                updateMenu();
+            }
+        }
+
+        function installAllHacks() {
+            if (firmwareDownloaded) {
+                for (let hack in hacks) {
+                    hacks[hack].installed = true;
+                    hacks[hack].active = true;
+                }
+                updateMenu();
+            }
+        }
+
+        function exit() {
+            window.close();
+        }
+    </script>
+</body>
 </html>
